@@ -3,19 +3,23 @@
   // Custom renderer interface of halo-plugin-vditor / vditor-mde.
   // This file is loaded as text, then invoked as a function by the plugin.
   var serial = 0;
-  var stylesheetId = "nqs-vditor-style-v1";
+  var stylesheetId = "nqs-vditor-style-v2";
   var css = String.raw`
 .nqs-report{margin:1em 0;color:inherit;font-family:inherit;font-size:14px;line-height:1.6;white-space:normal;}
 .nqs-report,.nqs-report *{box-sizing:border-box;}
-.nqs-tabs{border:1px solid #434343;border-radius:9px;background:#292929;color:#eee;padding:12px;max-width:100%;margin:12px 0;}
+.nqs-tabs{border:1px solid #434343;border-radius:9px;background:#292929;color:#eee;padding:12px;max-width:100%;margin:12px 0;height:auto!important;max-height:none!important;}
 .nqs-tab-list{display:flex;align-items:flex-end;gap:4px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid #484848;padding:0 0 0 2px;white-space:nowrap;}
 .nqs-tab{cursor:pointer;flex-shrink:0;font:inherit;font-size:14px;color:#bcbcbc;background:transparent;border:1px solid transparent;border-radius:6px 6px 0 0;padding:9px 13px;line-height:1.3;}
 .nqs-tab:hover{background:#383838;color:#fff;}
 .nqs-tab[aria-selected="true"]{background:#383838;border-color:#434343;color:#fff;font-weight:600;}
 .nqs-tab:focus-visible{outline:2px solid #6ca9ff;outline-offset:-2px;}
-.nqs-panels{background:#292929;padding:14px 4px 3px;}
+.nqs-panels{background:#292929;padding:14px 4px 3px;height:auto!important;max-height:none!important;overflow:visible!important;}
+.nqs-panel{height:auto!important;max-height:none!important;overflow:visible!important;}
 .nqs-panel[hidden]{display:none!important;}
-.nqs-terminal{display:block;max-width:100%;overflow:auto;max-height:650px;scrollbar-width:thin;border-radius:7px;background:#1e1e1e;color:#f1f1f1;padding:22px 25px;margin:0;font:600 13px/1.47 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre;tab-size:4;text-align:left;text-shadow:none;}
+/* Expand vertically to the entire report. Preserve horizontal scrolling for wide ANSI tables. */
+.nqs-terminal{display:block;max-width:100%;width:100%;height:auto!important;min-height:0!important;max-height:none!important;overflow-x:auto;overflow-y:visible;scrollbar-width:thin;border-radius:7px;background:#1e1e1e;color:#f1f1f1;padding:22px 25px;margin:0;font:600 13px/1.47 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre;tab-size:4;text-align:left;text-shadow:none;}
+/* Override max-height/overflow rules from the Halo theme or Vditor styles. */
+.nqs-report pre.nqs-terminal,.vditor-reset .nqs-report pre.nqs-terminal{height:auto!important;max-height:none!important;overflow-y:visible!important;}
 .nqs-line{margin:7px 0;}
 .nqs-line a{color:#80bbff!important;}
 .nqs-line img{display:block;max-width:100%;height:auto;border-radius:6px;margin:8px 0;}
