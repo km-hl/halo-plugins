@@ -3,7 +3,7 @@
   // Custom renderer interface of halo-plugin-vditor / vditor-mde.
   // This file is loaded as text, then invoked as a function by the plugin.
   var serial = 0;
-  var stylesheetId = "nqs-vditor-style-v2";
+  var stylesheetId = "nqs-vditor-style-v4";
   var css = String.raw`
 .nqs-report{margin:1em 0;color:inherit;font-family:inherit;font-size:14px;line-height:1.6;white-space:normal;}
 .nqs-report,.nqs-report *{box-sizing:border-box;}
@@ -17,9 +17,11 @@
 .nqs-panel{height:auto!important;max-height:none!important;overflow:visible!important;}
 .nqs-panel[hidden]{display:none!important;}
 /* Expand vertically to the entire report. Preserve horizontal scrolling for wide ANSI tables. */
-.nqs-terminal{display:block;max-width:100%;width:100%;height:auto!important;min-height:0!important;max-height:none!important;overflow-x:auto;overflow-y:visible;scrollbar-width:thin;border-radius:7px;background:#1e1e1e;color:#f1f1f1;padding:22px 25px;margin:0;font:600 13px/1.47 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre;tab-size:4;text-align:left;text-shadow:none;}
+.nqs-term-xscroll{display:block;box-sizing:border-box;width:100%;max-width:100%;height:auto!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin;padding-bottom:1px;}
+.nqs-terminal{display:block;box-sizing:border-box;width:max-content!important;min-width:100%;max-width:none!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;border-radius:7px;background:#1e1e1e;color:#f1f1f1;padding:22px 25px;margin:0;font:600 13px/1.47 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre;tab-size:4;text-align:left;text-shadow:none;}
 /* Override max-height/overflow rules from the Halo theme or Vditor styles. */
-.nqs-report pre.nqs-terminal,.vditor-reset .nqs-report pre.nqs-terminal{height:auto!important;max-height:none!important;overflow-y:visible!important;}
+.nqs-report pre.nqs-terminal,.vditor-reset .nqs-report pre.nqs-terminal{height:auto!important;max-height:none!important;overflow:visible!important;}
+.nqs-report .nqs-term-xscroll,.vditor-reset .nqs-report .nqs-term-xscroll{height:auto!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;}
 .nqs-line{margin:7px 0;}
 .nqs-line a{color:#80bbff!important;}
 .nqs-line img{display:block;max-width:100%;height:auto;border-radius:6px;margin:8px 0;}
@@ -135,7 +137,7 @@ pre:has(> code.language-nodeseek){padding:0!important;margin:0!important;border:
       apply(match[1]); last=re.lastIndex;
     }
     out+=chunk(input.slice(last));
-    return '<pre class="nqs-terminal">'+out+'</pre>';
+    return '<div class="nqs-term-xscroll"><pre class="nqs-terminal">'+out+'</pre></div>';
   }
 
   function renderLoose(lines) {
